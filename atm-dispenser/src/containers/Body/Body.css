@@ -1,0 +1,9 @@
+.Body{
+  background-color: #edeaea;
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  justify-content: left;
+  font-size: calc(10px + 1vmin);
+  margin: 20px 0px;
+}

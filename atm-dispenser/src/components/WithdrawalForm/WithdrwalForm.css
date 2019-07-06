@@ -1,0 +1,38 @@
+.WithdrawalForm {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  min-width: 400px;
+  padding: 30px 40px 0px 40px;
+  margin: 20px 0px;
+  
+  justify-content: center;
+  font-size: calc(10px + 1vmin);
+}
+
+.marginClass{
+  margin: 20px 0px 20px 0px;
+}
+.alignmentClass{
+align-items: center;
+}
+
+.inputClass{
+  text-align: right; 
+  height: 70px;
+  font-weight: 700;
+  font-size: 18px;
+}
+.errorCls{
+  color: red;
+}
+.buttonClass{
+  background-color: #4285f4;
+  border: 1px solid #4285f4;
+  color: white;
+  height: 70px;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+}

@@ -1,0 +1,21 @@
+.DisplayDenomination{
+    padding: 30px 40px 0px 40px;
+    display: flex;
+    min-width: 700px;
+    flex-direction: column;
+}
+
+.liClass {
+    border-top: 1px solid #ccc;
+}
+
+.ulClass {
+    columns: 2;
+    list-style: none;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+}
+
+.borderClass {
+    border-bottom: 2px solid #ccc;
+}

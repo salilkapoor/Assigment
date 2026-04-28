@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Digest — April 28, 2026</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='11' height='11' rx='2' fill='%232d6a4f'/%3E%3Crect x='17' y='4' width='11' height='11' rx='2' fill='%232d6a4f' opacity='.45'/%3E%3Crect x='4' y='17' width='11' height='11' rx='2' fill='%232d6a4f' opacity='.45'/%3E%3Crect x='17' y='17' width='11' height='11' rx='2' fill='%232d6a4f' opacity='.2'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf9f7; --surface: #fff; --border: #e8e4de;
+  --text: #1a1814; --text-secondary: #6b6560; --text-muted: #9a938c;
+  --accent: #2d6a4f; --accent-light: #e8f4ef; --link: #2d6a4f;
+  --chip-bg: #f0ede8; --chip-text: #5a5550;
+  --section-rule: #ddd9d3; --pq-bg: #f5f2ed; --pq-border: #2d6a4f;
+  --nav-bg: rgba(250,249,247,.92); --nav-border: #e8e4de; --nav-active: #2d6a4f;
+  --cc: #2d6a4f; --cc-bg: #e8f4ef;
+  --react: #1e5c6b; --react-bg: #eaf4f5;
+  --ts: #3b5ea6; --ts-bg: #eef2fb;
+  --sec: #7a2020; --sec-bg: #fdf0ee;
+  --js: #6b5000; --js-bg: #fdf5e8;
+  --ai: #5a3578; --ai-bg: #f5edfb;
+  --infra: #7a4f1e; --infra-bg: #faf3ea;
+  --tools: #1a5040; --tools-bg: #eaf5f0;
+  --design: #8b3a62; --design-bg: #fdf0f7;
+  --python: #1e3a6b; --python-bg: #eef3fb;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12110f; --surface: #1c1a17; --border: #2e2b26;
+    --text: #f0ece5; --text-secondary: #a09890; --text-muted: #6b6560;
+    --accent: #52c489; --accent-light: #1a3328; --link: #52c489;
+    --chip-bg: #252219; --chip-text: #b0a898;
+    --section-rule: #2e2b26; --pq-bg: #1e1c18; --pq-border: #52c489;
+    --nav-bg: rgba(18,17,15,.92); --nav-border: #2e2b26; --nav-active: #52c489;
+  }
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.65}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;height:44px;background:var(–nav-bg);border-bottom:1px solid var(–nav-border);backdrop-filter:blur(12px);display:flex;align-items:center;padding:0 24px;gap:20px;overflow-x:auto;white-space:nowrap}
+.nav-brand{font-family:‘Playfair Display’,serif;font-weight:700;font-size:15px;color:var(–text);margin-right:8px;flex-shrink:0}
+.nav a{font-size:12px;font-weight:500;color:var(–text-secondary);padding:4px 8px;border-radius:4px;transition:color .15s,background .15s}
+.nav a:hover,.nav a.active{color:var(–nav-active);background:var(–accent-light);text-decoration:none}
+
+/* HEADER */
+.digest-header{max-width:780px;margin:0 auto;padding:52px 24px 32px;border-bottom:1px solid var(–border)}
+.digest-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.digest-date{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(–text-muted)}
+.source-badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px}
+.badge-medium{background:#fff5e5;color:#9a5500;border:1px solid #f0d090}
+.digest-h1{font-family:‘Playfair Display’,serif;font-size:clamp(26px,5vw,42px);font-weight:700;line-height:1.15;color:var(–text);margin-bottom:10px}
+.digest-tagline{font-family:‘Playfair Display’,serif;font-style:italic;font-size:16px;color:var(–text-secondary);margin-bottom:18px}
+.topic-chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;background:var(–chip-bg);color:var(–chip-text)}
+
+/* SECTION WRAPPER */
+.section{max-width:780px;margin:0 auto;padding:40px 24px}
+.section-title{font-family:‘Playfair Display’,serif;font-size:22px;font-weight:700;margin-bottom:6px;color:var(–text)}
+.section-sub{font-size:12px;color:var(–text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:24px}
+.section-rule{border:none;border-top:1px solid var(–section-rule);margin:40px 0}
+
+/* SIGNAL */
+.signal-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+.signal-list li{padding-left:20px;position:relative;font-size:14px;line-height:1.6;color:var(–text)}
+.signal-list li::before{content:‘→’;position:absolute;left:0;color:var(–accent);font-weight:700}
+
+/* SCAN LAYER */
+.glance-group{margin-bottom:28px}
+.glance-group-title{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(–text-muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(–border)}
+details.glance-group summary{cursor:pointer;list-style:none;user-select:none}
+details.glance-group summary::-webkit-details-marker{display:none}
+details.glance-group[open] .glance-group-title::after{content:’ ▲’;font-size:9px}
+details.glance-group:not([open]) .glance-group-title::after{content:’ ▼’;font-size:9px}
+.glance-items-wrap{margin-top:10px}
+.glance-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(–border);transition:opacity .2s}
+.glance-item:last-child{border-bottom:none}
+.glance-item.glance-hidden{opacity:.35}
+.glance-cb-wrap{padding-top:2px;flex-shrink:0}
+.glance-cb{accent-color:var(–accent);width:14px;height:14px;cursor:pointer}
+.glance-item-title{flex:1;min-width:0}
+.story-link{font-size:13px;font-weight:500;color:var(–text);display:block;line-height:1.4}
+.story-link:hover{color:var(–link);text-decoration:none}
+.author-link{font-size:11px;color:var(–text-muted);display:block;margin-top:2px}
+.author-link:hover{color:var(–link)}
+.glance-meta{font-size:11px;color:var(–text-muted);white-space:nowrap;flex-shrink:0}
+.jump{font-size:11px;color:var(–link);margin-left:4px}
+
+/* DEEP DIVE */
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 12px;border-radius:3px;margin-bottom:20px}
+.pill-cc{background:var(–cc-bg);color:var(–cc)}
+.pill-ai{background:var(–ai-bg);color:var(–ai)}
+.pill-react{background:var(–react-bg);color:var(–react)}
+.pill-ts{background:var(–ts-bg);color:var(–ts)}
+.pill-infra{background:var(–infra-bg);color:var(–infra)}
+.pill-design{background:var(–design-bg);color:var(–design)}
+.pill-tools{background:var(–tools-bg);color:var(–tools)}
+.pill-python{background:var(–python-bg);color:var(–python)}
+.dot-cc{background:var(–cc)}
+.dot-ai{background:var(–ai)}
+.dot-react{background:var(–react)}
+.dot-ts{background:var(–ts)}
+.dot-infra{background:var(–infra)}
+.dot-design{background:var(–design)}
+.dot-tools{background:var(–tools)}
+.dot-python{background:var(–python)}
+
+.topic-group{margin-bottom:48px}
+.story-card{background:var(–surface);border:1px solid var(–border);border-radius:8px;padding:24px;margin-bottom:20px;transition:opacity .3s}
+.story-card.hidden-card{display:none}
+.story-card-meta{font-size:11px;color:var(–text-muted);margin-bottom:4px}
+.story-card-author{font-size:12px;color:var(–text-secondary);margin-bottom:8px}
+.story-card-author a{color:var(–link)}
+.story-card h3{font-family:‘Playfair Display’,serif;font-size:18px;line-height:1.35;margin-bottom:16px}
+.story-card h3 a{color:var(–text)}
+.story-card h3 a:hover{color:var(–link);text-decoration:none}
+.card-section{margin-bottom:14px}
+.card-section-label{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(–text-muted);margin-bottom:5px}
+.card-section p{font-size:14px;color:var(–text-secondary);line-height:1.65}
+.pullquote{background:var(–pq-bg);border-left:3px solid var(–pq-border);padding:14px 18px;border-radius:0 6px 6px 0;margin-top:16px}
+.pullquote-label{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(–accent);margin-bottom:5px}
+.pullquote p{font-size:13px;font-style:italic;color:var(–text);line-height:1.6}
+.story-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid var(–border)}
+.reaction-btns{display:flex;gap:8px}
+.reaction-btn{font-size:12px;padding:5px 12px;border:1px solid var(–border);background:var(–bg);color:var(–text-secondary);border-radius:16px;cursor:pointer;transition:all .15s}
+.reaction-btn:hover{border-color:var(–accent);color:var(–accent)}
+.reaction-btn.active-like{background:var(–accent-light);border-color:var(–accent);color:var(–accent)}
+.reaction-btn.active-dislike{background:#fdf0ee;border-color:#c0392b;color:#c0392b}
+.story-read-link{font-size:12px;font-weight:600;color:var(–link)}
+
+/* ANALYST VIEW */
+.analyst-prose p{font-size:15px;color:var(–text-secondary);line-height:1.75;margin-bottom:16px}
+.themes-list{list-style:none;margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.themes-list li{padding-left:22px;position:relative;font-size:14px;color:var(–text);line-height:1.6}
+.themes-list li::before{content:‘◆’;position:absolute;left:0;color:var(–accent);font-size:8px;top:6px}
+
+/* FOOTER */
+.digest-footer{max-width:780px;margin:0 auto;padding:32px 24px 48px;border-top:1px solid var(–border);text-align:center;color:var(–text-muted);font-size:12px}
+.digest-footer a{color:var(–text-muted)}
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+
+<nav class="nav">
+  <span class="nav-brand">Tech Digest</span>
+  <a href="#signal">Signal</a>
+  <a href="#glance">At a Glance</a>
+  <a href="#deepdive">Deep Dive</a>
+  <a href="#analyst">Analyst View</a>
+</nav>
+
+<!-- HEADER -->
+
+<header class="digest-header">
+  <div class="digest-meta">
+    <span class="digest-date">Tuesday, April 28, 2026</span>
+    <span class="source-badge badge-medium">Medium Daily Digest</span>
+  </div>
+  <h1 class="digest-h1">Claude Code Takes the Terminal</h1>
+  <p class="digest-tagline">Agentic tooling, React architecture, monorepo wars, and the quiet rise of micro-SaaS.</p>
+  <div class="topic-chips">
+    <span class="chip">Claude Code</span>
+    <span class="chip">Agentic Dev</span>
+    <span class="chip">React</span>
+    <span class="chip">TypeScript / Next.js</span>
+    <span class="chip">Python Concurrency</span>
+    <span class="chip">Monorepos</span>
+    <span class="chip">UI Design 2026</span>
+    <span class="chip">Micro-SaaS</span>
+  </div>
+</header>
+
+<!-- SIGNAL -->
+
+<section class="section" id="signal">
+  <h2 class="section-title">Signal</h2>
+  <p class="section-sub">Executive summary — what changed & why it matters</p>
+  <ul class="signal-list">
+    <li>Claude Code is becoming a full development platform: today's digest features five separate articles on Claude Code workflows — from terminal selection (Ghostty) and backend usage patterns, to multi-agent orchestration and a 150K-star GitHub "superpowers" extension.</li>
+    <li>The agentic shift is real. Developers are no longer prompting Claude — they're managing fleets of Claude sub-agents, writing orchestration prompts, and treating AI as a team member rather than a tool.</li>
+    <li>React architecture is under the microscope again. A deeply-read piece on React app growth patterns is gaining traction, signaling that scaling frontend codebases remains an unsolved, painful problem.</li>
+    <li>Python's asyncio ergonomics are being overhauled: TaskGroup (Python 3.11+) is being positioned as a strict upgrade over <code>asyncio.gather</code> for structured, cancellation-safe concurrency.</li>
+    <li>Micro-SaaS continues to prove the boring-is-profitable thesis: utility apps doing one thing quietly generating $5K–$50K/month challenge the "build something impressive" startup narrative.</li>
+  </ul>
+</section>
+
+<hr class="section-rule" style="max-width:780px;margin:0 auto">
+
+<!-- SCAN LAYER -->
+
+<section class="section" id="glance">
+  <h2 class="section-title">At a Glance</h2>
+  <p class="section-sub">Scan all stories — uncheck to hide from Deep Dive</p>
+
+  <!-- Claude Code & Agentic Dev -->
+
+  <details class="glance-group" open>
+    <summary><div class="glance-group-title">Claude Code &amp; Agentic Development</div></summary>
+    <div class="glance-items-wrap">
+      <div class="glance-item" data-card="ghostty">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-ghostty" checked onchange="toggleHide('ghostty')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@piedpay/the-best-terminal-for-claude-code-ghostty-95c35b2d90e6" target="_blank" rel="noopener">The Best Terminal for Claude Code — Ghostty</a>
+          <a class="author-link" href="https://medium.com/@piedpay" target="_blank" rel="noopener">Chimin · Medium</a>
+        </div>
+        <span class="glance-meta">5 min <a class="jump" href="#card-ghostty">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="superpowers">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-superpowers" checked onchange="toggleHide('superpowers')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@anilmathewm/i-gave-claude-code-a-brain-its-called-superpowers-and-it-has-150-000-github-stars-for-a-16c4074a9209" target="_blank" rel="noopener">I Gave Claude Code a Brain. It's Called Superpowers — 150K GitHub Stars</a>
+          <a class="author-link" href="https://medium.com/@anilmathewm" target="_blank" rel="noopener">Anil Mathew · Medium</a>
+        </div>
+        <span class="glance-meta">9 min <a class="jump" href="#card-superpowers">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="mastercc">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-mastercc" checked onchange="toggleHide('mastercc')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@mordvash1/mastering-claude-code-a-developers-guide-746a68363f4e" target="_blank" rel="noopener">Mastering Claude Code: A Developer's Guide</a>
+          <a class="author-link" href="https://medium.com/@mordvash1" target="_blank" rel="noopener">Mor Dvash · Israeli Tech Radar</a>
+        </div>
+        <span class="glance-meta">10 min <a class="jump" href="#card-mastercc">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="multiagent">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-multiagent" checked onchange="toggleHide('multiagent')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@harikayenuga/i-stopped-coding-with-claude-i-started-managing-a-team-of-claudes-8c9f91504fff" target="_blank" rel="noopener">I Stopped Coding With Claude. I Started Managing a Team of Claudes.</a>
+          <a class="author-link" href="https://medium.com/@harikayenuga" target="_blank" rel="noopener">Harika Yenuga · Stackademic</a>
+        </div>
+        <span class="glance-meta">10 min <a class="jump" href="#card-multiagent">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="backendcc">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-backendcc" checked onchange="toggleHide('backendcc')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@saquibdev/how-to-use-claude-code-for-backend-software-development-4304857b5339" target="_blank" rel="noopener">How to Use Claude Code for Backend Software Development</a>
+          <a class="author-link" href="https://medium.com/@saquibdev" target="_blank" rel="noopener">Saquib Aftab · Javarevisited</a>
+        </div>
+        <span class="glance-meta">6 min <a class="jump" href="#card-backendcc">↓</a></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- AI Tools -->
+
+  <details class="glance-group" open>
+    <summary><div class="glance-group-title">AI Tools &amp; Design</div></summary>
+    <div class="glance-items-wrap">
+      <div class="glance-item" data-card="claudedesign">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-claudedesign" checked onchange="toggleHide('claudedesign')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@michalmalewicz/will-claude-design-replace-designers-f92623f3befe" target="_blank" rel="noopener">Will Claude Design Replace Designers?</a>
+          <a class="author-link" href="https://medium.com/@michalmalewicz" target="_blank" rel="noopener">Michal Malewicz · Medium</a>
+        </div>
+        <span class="glance-meta">9 min <a class="jump" href="#card-claudedesign">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="graphify">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-graphify" checked onchange="toggleHide('graphify')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@anna.bildea/how-to-use-graphify-turn-any-folder-into-a-knowledge-graph-d51b38eb60b6" target="_blank" rel="noopener">How to Use Graphify: Turn Any Folder Into a Knowledge Graph</a>
+          <a class="author-link" href="https://medium.com/@anna.bildea" target="_blank" rel="noopener">Ana Bildea, PhD · Agentic Builders</a>
+        </div>
+        <span class="glance-meta">6 min <a class="jump" href="#card-graphify">↓</a></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- React & Frontend -->
+
+  <details class="glance-group" open>
+    <summary><div class="glance-group-title">React &amp; Frontend Architecture</div></summary>
+    <div class="glance-items-wrap">
+      <div class="glance-item" data-card="reactarch">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-reactarch" checked onchange="toggleHide('reactarch')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@0xTanzim/react-architecture-what-nobody-tells-you-when-your-app-starts-growing-41babbabf294" target="_blank" rel="noopener">React Architecture: What Nobody Tells You When Your App Starts Growing</a>
+          <a class="author-link" href="https://medium.com/@0xTanzim" target="_blank" rel="noopener">Tanzim Hossain · Level Up Coding</a>
+        </div>
+        <span class="glance-meta">11 min <a class="jump" href="#card-reactarch">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="reactnative">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-reactnative" checked onchange="toggleHide('reactnative')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@lilybrooke/bridging-the-gap-custom-native-module-development-in-react-native-for-android-ios-29f1f72e7ba7" target="_blank" rel="noopener">Bridging the Gap: Custom Native Module Development in React Native</a>
+          <a class="author-link" href="https://medium.com/@lilybrooke" target="_blank" rel="noopener">Lily Brooke · Stackademic</a>
+        </div>
+        <span class="glance-meta">5 min <a class="jump" href="#card-reactnative">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="uitrends">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-uitrends" checked onchange="toggleHide('uitrends')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@webdesignerindia/ui-design-trends-2026-what-modern-business-websites-must-look-like-now-37568f0115f8" target="_blank" rel="noopener">UI Design Trends 2026: What Modern Business Websites Must Look Like Now</a>
+          <a class="author-link" href="https://medium.com/@webdesignerindia" target="_blank" rel="noopener">SANJAY DEY · Medium</a>
+        </div>
+        <span class="glance-meta">17 min <a class="jump" href="#card-uitrends">↓</a></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- TypeScript / Next.js -->
+
+  <details class="glance-group" open>
+    <summary><div class="glance-group-title">TypeScript, Next.js &amp; Infrastructure</div></summary>
+    <div class="glance-items-wrap">
+      <div class="glance-item" data-card="turborepo">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-turborepo" checked onchange="toggleHide('turborepo')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@navanathjadhav/turborepo-vs-nx-i-migrated-a-monorepo-twice-to-compare-38e95e434273" target="_blank" rel="noopener">Turborepo vs Nx: I Migrated a Monorepo Twice to Compare</a>
+          <a class="author-link" href="https://medium.com/@navanathjadhav" target="_blank" rel="noopener">Navanath Jadhav · Medium</a>
+        </div>
+        <span class="glance-meta">14 min <a class="jump" href="#card-turborepo">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="nextjsmem">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-nextjsmem" checked onchange="toggleHide('nextjsmem')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@danielrusnok/our-next-js-app-crashed-every-24-hours-here-are-the-six-memory-fixes-35245f6548e4" target="_blank" rel="noopener">Our Next.js App Crashed Every 24 Hours. Here Are the Six Memory Fixes.</a>
+          <a class="author-link" href="https://medium.com/@danielrusnok" target="_blank" rel="noopener">Daniel Rusnok · Level Up Coding</a>
+        </div>
+        <span class="glance-meta">6 min <a class="jump" href="#card-nextjsmem">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="portlib">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-portlib" checked onchange="toggleHide('portlib')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@TusharKanjariya/this-tiny-library-removes-localhost-port-numbers-c452f9717a05" target="_blank" rel="noopener">This Tiny Library Removes localhost Port Numbers</a>
+          <a class="author-link" href="https://medium.com/@TusharKanjariya" target="_blank" rel="noopener">Tushar Kanjariya · Medium</a>
+        </div>
+        <span class="glance-meta">5 min <a class="jump" href="#card-portlib">↓</a></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- Python -->
+
+  <details class="glance-group" open>
+    <summary><div class="glance-group-title">Python &amp; Indie Building</div></summary>
+    <div class="glance-items-wrap">
+      <div class="glance-item" data-card="asyncio">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-asyncio" checked onchange="toggleHide('asyncio')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@christos.karvouniaris247/stop-using-asyncio-gather-proper-structured-concurrency-in-python-2c6a9561c264" target="_blank" rel="noopener">Stop Using asyncio.gather: Proper Structured Concurrency in Python</a>
+          <a class="author-link" href="https://medium.com/@christos.karvouniaris247" target="_blank" rel="noopener">Chris Karvouniaris · Stackademic</a>
+        </div>
+        <span class="glance-meta">5 min <a class="jump" href="#card-asyncio">↓</a></span>
+      </div>
+      <div class="glance-item" data-card="microsaas">
+        <div class="glance-cb-wrap"><input class="glance-cb" type="checkbox" id="cb-microsaas" checked onchange="toggleHide('microsaas')" aria-label="Show card"></div>
+        <div class="glance-item-title">
+          <a class="story-link" href="https://medium.com/@tamimbuilds/7-stupid-micro-saas-ideas-that-are-quietly-making-5k-50k-month-2aa159562e7b" target="_blank" rel="noopener">7 "Stupid" Micro-SaaS Ideas That Are Quietly Making $5K–$50K/Month</a>
+          <a class="author-link" href="https://medium.com/@tamimbuilds" target="_blank" rel="noopener">tamimbuilds · Medium</a>
+        </div>
+        <span class="glance-meta">7 min <a class="jump" href="#card-microsaas">↓</a></span>
+      </div>
+    </div>
+  </details>
+</section>
+
+<hr class="section-rule" style="max-width:780px;margin:0 auto">
+
+<!-- DEEP DIVE -->
+
+<section class="section" id="deepdive">
+  <h2 class="section-title">Deep Dive</h2>
+  <p class="section-sub">Editorial analysis — story by story</p>
+
+  <!-- CLAUDE CODE & AGENTIC DEV -->
+
+  <div class="topic-group" data-group="ghostty,superpowers,mastercc,multiagent,backendcc">
+    <span class="pill pill-cc">Claude Code &amp; Agentic Development</span>
+
+```
+<div class="story-card" id="card-ghostty">
+  <p class="story-card-meta">Medium · 5 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@piedpay" target="_blank" rel="noopener">Chimin</a></p>
+  <h3><a href="https://medium.com/@piedpay/the-best-terminal-for-claude-code-ghostty-95c35b2d90e6" target="_blank" rel="noopener">The Best Terminal for Claude Code — Ghostty</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>The author argues that Ghostty — a GPU-accelerated terminal emulator — is the optimal environment for running Claude Code sessions. The piece covers how Ghostty's rendering performance, native split panes, and configurable key bindings reduce friction when Claude Code is running long agentic tasks alongside your editor.</p>
+    <p>It's a short but opinionated take that cuts through the terminal choice paralysis many developers face: iTerm2, Warp, Alacritty, kitty — Ghostty is positioned as the best-balanced option for AI-heavy workflows.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The non-obvious angle here is rendering stability under load. Claude Code's output can be verbose — streaming diffs, file operations, think-step logs. Terminals that use CPU-based renderers can lag visibly, causing developers to miss critical output or lose context. GPU-acceleration in Ghostty means the terminal pane stays crisp even when Claude is flooding stdout. The author also highlights Ghostty's native macOS feel with zero Electron overhead.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>If you're spending significant hours inside Claude Code sessions, your terminal is now a primary IDE surface. Treat it accordingly — GPU rendering and split panes aren't aesthetics, they're latency and context management.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','ghostty')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','ghostty')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('ghostty')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@piedpay/the-best-terminal-for-claude-code-ghostty-95c35b2d90e6" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-superpowers">
+  <p class="story-card-meta">Medium · 9 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@anilmathewm" target="_blank" rel="noopener">Anil Mathew</a></p>
+  <h3><a href="https://medium.com/@anilmathewm/i-gave-claude-code-a-brain-its-called-superpowers-and-it-has-150-000-github-stars-for-a-16c4074a9209" target="_blank" rel="noopener">I Gave Claude Code a Brain. It's Called Superpowers — and It Has 150,000 GitHub Stars</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>The author documents integrating a widely-starred open source "Superpowers" extension (referencing a Claude Code enhancement tool with 150K+ GitHub stars) into their workflow. The piece walks through how the extension adds persistent memory, structured task management, and project-level context that Claude Code doesn't carry natively between sessions.</p>
+    <p>The framing is confessional — "I asked Claude Code to build a feature last month" and watched it lose context mid-session. Superpowers is positioned as the fix for Claude's statelessness problem.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The core engineering insight: Claude Code is stateless per session. Any context from yesterday's work — decisions made, files touched, patterns established — evaporates unless explicitly re-provided. Superpowers addresses this with a persistent context layer, essentially a structured CLAUDE.md on steroids that gets injected into each new session. The 150K GitHub star count signals this isn't niche — it's rapidly becoming a standard tool in the Claude Code workflow stack.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>If you're building a non-trivial project with Claude Code, start your CLAUDE.md now. Better yet, integrate a structured context management layer before you need it — retrofitting is painful when the codebase is already large.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','superpowers')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','superpowers')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('superpowers')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@anilmathewm/i-gave-claude-code-a-brain-its-called-superpowers-and-it-has-150-000-github-stars-for-a-16c4074a9209" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-mastercc">
+  <p class="story-card-meta">Israeli Tech Radar · 10 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@mordvash1" target="_blank" rel="noopener">Mor Dvash</a></p>
+  <h3><a href="https://medium.com/@mordvash1/mastering-claude-code-a-developers-guide-746a68363f4e" target="_blank" rel="noopener">Mastering Claude Code: A Developer's Guide</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A comprehensive developer guide with 1K+ reads, synthesizing months of real-world Claude Code usage into a structured reference. Covers setup, effective prompting patterns, project-level configuration, and common failure modes that trip up developers who approach Claude Code as a faster autocomplete rather than an autonomous agent.</p>
+    <p>The guide distinguishes between reactive prompting (ask, wait, review) and proactive prompting (plan, delegate, validate) — a mindset shift the author argues is the key to getting 10x output from Claude Code.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The non-obvious insight: Claude Code performs significantly better with explicit file-scoping instructions in your prompts ("only touch files in /src/api") and explicit success criteria ("the test suite must pass before you stop"). Vague delegation leads to Claude confidently completing the wrong task. The guide also covers the value of mid-task interruption — pausing Claude, reviewing its plan, then resuming — rather than letting it run to completion unchecked.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>Treat Claude Code like a capable contractor who needs a tight scope, not a magic oracle. The best prompt engineering for agentic coding is constraint engineering — what Claude should NOT do matters as much as what it should.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','mastercc')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','mastercc')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('mastercc')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@mordvash1/mastering-claude-code-a-developers-guide-746a68363f4e" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-multiagent">
+  <p class="story-card-meta">Stackademic · 10 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@harikayenuga" target="_blank" rel="noopener">Harika Yenuga</a></p>
+  <h3><a href="https://medium.com/@harikayenuga/i-stopped-coding-with-claude-i-started-managing-a-team-of-claudes-8c9f91504fff" target="_blank" rel="noopener">I Stopped Coding With Claude. I Started Managing a Team of Claudes.</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A pivotal mindset piece — the author describes the moment they stopped using a single Claude instance for iterative coding and switched to orchestrating multiple Claude sub-agents: one for planning, one for implementation, one for testing, one for code review. The shift is from "AI copilot" to "AI team lead."</p>
+    <p>The article covers sub-agent orchestration primitives, how to write effective delegation prompts for each agent role, and how to manage handoffs so context doesn't degrade between agents.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The core technical leap: each Claude sub-agent gets a focused system prompt for its role — the reviewer Claude is explicitly told it hasn't written any of the code it's reviewing, reducing confirmation bias. Handoffs are structured as explicit artifacts (files, structured JSON) rather than natural language summaries, which dramatically reduces context loss. This maps closely to how Anthropic's own multi-agent documentation recommends structuring complex pipelines.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>Multi-agent orchestration is no longer experimental. Teams building serious AI-assisted workflows should define agent roles, design handoff artifacts, and separate the reviewer agent from the builder agent to get genuine quality feedback rather than self-agreement.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','multiagent')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','multiagent')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('multiagent')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@harikayenuga/i-stopped-coding-with-claude-i-started-managing-a-team-of-claudes-8c9f91504fff" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-backendcc">
+  <p class="story-card-meta">Javarevisited · 6 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@saquibdev" target="_blank" rel="noopener">Saquib Aftab</a></p>
+  <h3><a href="https://medium.com/@saquibdev/how-to-use-claude-code-for-backend-software-development-4304857b5339" target="_blank" rel="noopener">How to Use Claude Code for Backend Software Development</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A practical, command-focused guide specifically for backend developers — covering Claude Code's most useful commands for scaffolding APIs, writing migration scripts, generating tests, and navigating existing codebases. The article emphasizes backend-specific concerns that front-end-heavy Claude Code tutorials often miss: database schema changes, auth middleware, and environment configuration management.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The guide highlights that Claude Code excels at reading existing backend code and suggesting idiomatic improvements when given proper context — but that backend developers need to be especially careful about database migration sequencing. Claude can generate valid SQL migrations that are logically correct but operationally dangerous if run in the wrong order or environment. The author recommends always having Claude annotate each migration with explicit pre-conditions.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>Backend developers using Claude Code should build explicit pre-condition checks into any migration or infra-touching prompts. "Generate this migration" is incomplete; "Generate this migration and list all conditions that must be true before running it" is production-safe.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','backendcc')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','backendcc')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('backendcc')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@saquibdev/how-to-use-claude-code-for-backend-software-development-4304857b5339" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- AI TOOLS & DESIGN -->
+
+  <div class="topic-group" data-group="claudedesign,graphify">
+    <span class="pill pill-ai">AI Tools &amp; Design</span>
+
+```
+<div class="story-card" id="card-claudedesign">
+  <p class="story-card-meta">Medium · 9 min read · 2.5K reads · 86 responses</p>
+  <p class="story-card-author"><a href="https://medium.com/@michalmalewicz" target="_blank" rel="noopener">Michal Malewicz</a></p>
+  <h3><a href="https://medium.com/@michalmalewicz/will-claude-design-replace-designers-f92623f3befe" target="_blank" rel="noopener">Will Claude Design Replace Designers?</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>One of the most-read and most-discussed articles in today's digest. Malewicz — a prolific design/dev author — dives into Claude's design generation capabilities and asks the uncomfortable question head-on. The answer is characteristically nuanced: Claude can produce competent, functional UI designs, but design is more than visuals — it's decisions, taste, and user research that Claude currently can't perform.</p>
+    <p>With 86 responses, this piece clearly hit a nerve in the design community. The framing "It's complicated, but very simple" is a deliberate provocation.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The key insight is a distinction often missed in AI-vs-designer debates: Claude excels at execution design (given constraints, generate a UI) but struggles with discovery design (find the right constraints). Design thinking requires knowing what questions to ask, not just how to answer them. Claude's current capabilities compress the execution phase to near-zero for experienced designers — making them dramatically more productive — while leaving the strategic phase untouched.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>Designers who treat Claude as an execution engine while owning the discovery and decision layers will see enormous productivity gains. Designers who resist engaging with AI tools entirely risk being outpaced by those who don't.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','claudedesign')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','claudedesign')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('claudedesign')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@michalmalewicz/will-claude-design-replace-designers-f92623f3befe" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-graphify">
+  <p class="story-card-meta">Agentic Builders · 6 min read · 1.4K reads</p>
+  <p class="story-card-author"><a href="https://medium.com/@anna.bildea" target="_blank" rel="noopener">Ana Bildea, PhD</a></p>
+  <h3><a href="https://medium.com/@anna.bildea/how-to-use-graphify-turn-any-folder-into-a-knowledge-graph-d51b38eb60b6" target="_blank" rel="noopener">How to Use Graphify: Turn Any Folder Into a Knowledge Graph</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>Graphify is a tool that ingests a directory of files and generates a structured knowledge graph, making relationships between documents, code, and notes navigable. The guide walks through practical usage — feeding a project folder into Graphify and using the resulting graph for codebase understanding, documentation gaps, and AI-assisted retrieval.</p>
+    <p>With 1.4K reads, this resonates strongly with developers building context-aware tooling — including anyone working on RAG pipelines or newsletter intelligence systems.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The interesting technical angle: Graphify's graph structure creates semantically richer context for LLM retrieval than flat vector search. Relationships between nodes (file A imports module B, which is documented in file C) give the model retrieval paths that pure embedding similarity misses. This is particularly powerful for large monorepos where a single query can need context spread across dozens of files.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>For any project with a growing knowledge base — code, documentation, notes — graph-based context retrieval is worth evaluating alongside vector search. The relationship layer it adds is precisely what flat embedding approaches miss at scale.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','graphify')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','graphify')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('graphify')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@anna.bildea/how-to-use-graphify-turn-any-folder-into-a-knowledge-graph-d51b38eb60b6" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- REACT & FRONTEND -->
+
+  <div class="topic-group" data-group="reactarch,reactnative,uitrends">
+    <span class="pill pill-react">React &amp; Frontend Architecture</span>
+
+```
+<div class="story-card" id="card-reactarch">
+  <p class="story-card-meta">Level Up Coding · 11 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@0xTanzim" target="_blank" rel="noopener">Tanzim Hossain</a></p>
+  <h3><a href="https://medium.com/@0xTanzim/react-architecture-what-nobody-tells-you-when-your-app-starts-growing-41babbabf294" target="_blank" rel="noopener">React Architecture: What Nobody Tells You When Your App Starts Growing</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A battle-tested guide from someone who has watched multiple React apps collapse under their own weight. The piece identifies the exact growth inflection points where common React patterns stop working — feature folders, component co-location, state management choices — and what to replace them with before the codebase becomes a maintenance nightmare.</p>
+    <p>The "nobody tells you" framing is accurate: most React tutorials stop at the simple case. This article addresses the 50-component, 10-developer reality.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The key architectural insight: the transition from flat component trees to domain-driven feature modules should happen at around 20-30 components, not when the codebase is already painful. The author argues for co-locating state, tests, and styles inside feature directories rather than separating by file type (components/, styles/, tests/) — a principle borrowed from backend domain design. Premature global state is identified as the single most common cause of React app refactoring pain.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>Restructure your React app before you feel the pain, not after. Domain-driven feature modules at 20-30 components are dramatically cheaper to build than to retrofit at 200.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','reactarch')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','reactarch')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('reactarch')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@0xTanzim/react-architecture-what-nobody-tells-you-when-your-app-starts-growing-41babbabf294" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-reactnative">
+  <p class="story-card-meta">Stackademic · 5 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@lilybrooke" target="_blank" rel="noopener">Lily Brooke</a></p>
+  <h3><a href="https://medium.com/@lilybrooke/bridging-the-gap-custom-native-module-development-in-react-native-for-android-ios-29f1f72e7ba7" target="_blank" rel="noopener">Bridging the Gap: Custom Native Module Development in React Native for Android &amp; iOS</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A practical guide to writing custom native modules when the React Native JavaScript bridge doesn't give you the platform capability you need. Covers the Turbo Module architecture, writing platform-specific code for both Android (Kotlin/Java) and iOS (Swift/ObjC), and exposing it cleanly to the JS layer.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The article correctly focuses on the New Architecture (Turbo Modules + JSI) rather than the legacy bridge — important, since the legacy bridge is deprecated. JSI-based modules run synchronously without the async bridge overhead, which matters for performance-critical features like camera, Bluetooth, and sensor access.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>If you're writing React Native native modules today, build against the New Architecture (Turbo Modules) from day one. Legacy bridge modules will require rewriting as RN's default architecture shifts.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','reactnative')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','reactnative')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('reactnative')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@lilybrooke/bridging-the-gap-custom-native-module-development-in-react-native-for-android-ios-29f1f72e7ba7" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-uitrends">
+  <p class="story-card-meta">Medium · 17 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@webdesignerindia" target="_blank" rel="noopener">SANJAY DEY</a></p>
+  <h3><a href="https://medium.com/@webdesignerindia/ui-design-trends-2026-what-modern-business-websites-must-look-like-now-37568f0115f8" target="_blank" rel="noopener">UI Design Trends 2026: What Modern Business Websites Must Look Like Now</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A comprehensive rundown of 2026's dominant UI patterns for business websites — covering motion design, AI-native interaction patterns, variable fonts, glassmorphism refinement, and the emerging shift from hero-image-first layouts to data-driven first screens. The 88% bounce rate stat (users who don't return after a bad experience) frames the article as a business case, not aesthetic advice.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The most technically interesting trend: AI-native UI patterns — type-ahead search that expands to conversational interfaces, dashboards with embedded natural language queries, and onboarding flows that adapt based on inferred user intent. These aren't future speculation; the article positions them as already expected by sophisticated B2B users in 2026.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>Business websites that feel like 2022 are quietly signaling that the product inside is also 2022. Investing in AI-native UI patterns isn't just about aesthetics — it's a trust signal to users who now expect conversational interfaces as a baseline.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','uitrends')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','uitrends')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('uitrends')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@webdesignerindia/ui-design-trends-2026-what-modern-business-websites-must-look-like-now-37568f0115f8" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- TYPESCRIPT / NEXT.JS / INFRA -->
+
+  <div class="topic-group" data-group="turborepo,nextjsmem,portlib">
+    <span class="pill pill-ts">TypeScript, Next.js &amp; Infrastructure</span>
+
+```
+<div class="story-card" id="card-turborepo">
+  <p class="story-card-meta">Medium · 14 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@navanathjadhav" target="_blank" rel="noopener">Navanath Jadhav</a></p>
+  <h3><a href="https://medium.com/@navanathjadhav/turborepo-vs-nx-i-migrated-a-monorepo-twice-to-compare-38e95e434273" target="_blank" rel="noopener">Turborepo vs Nx: I Migrated a Monorepo Twice to Compare</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>An unusually rigorous comparison — the author actually migrated the same codebase from Turborepo to Nx, then back to Turborepo, documenting the tradeoffs with real build time data. The piece covers caching strategies, task orchestration, plugin ecosystems, and team DX at different repo sizes.</p>
+    <p>The "migrated twice" framing gives this more credibility than most tool comparison articles, which are typically written after using only one tool in production.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The key finding: Turborepo wins on simplicity and zero-config caching at smaller monorepos (under ~15 packages), but Nx's plugin ecosystem and first-class code generation become decisive advantages as the monorepo scales. The author found Nx's distributed task execution (Nx Cloud) meaningfully faster than Turborepo's remote caching for large parallel builds. The migration cost between tools is non-trivial either direction — choose carefully based on 12-month scale projections, not current size.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>Under 15 packages and prioritizing developer simplicity: choose Turborepo. Planning to scale beyond 20+ packages with active code generation needs: invest in Nx early, before migration pain compounds.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','turborepo')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','turborepo')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('turborepo')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@navanathjadhav/turborepo-vs-nx-i-migrated-a-monorepo-twice-to-compare-38e95e434273" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-nextjsmem">
+  <p class="story-card-meta">Level Up Coding · 6 min read · 68 reads</p>
+  <p class="story-card-author"><a href="https://medium.com/@danielrusnok" target="_blank" rel="noopener">Daniel Rusnok</a></p>
+  <h3><a href="https://medium.com/@danielrusnok/our-next-js-app-crashed-every-24-hours-here-are-the-six-memory-fixes-35245f6548e4" target="_blank" rel="noopener">Our Next.js App Crashed Every 24 Hours. Here Are the Six Memory Fixes.</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A postmortem on a production Next.js app running on Render's 512MB Starter plan that was crashing with OOM errors on a 24-hour cycle. The author documents six specific fixes that reduced memory baseline from 93% to 35%, making the app stable on limited infrastructure.</p>
+    <p>Critically relevant for anyone deploying Next.js on budget cloud instances (Render, Railway, Fly.io starter tiers) where memory constraints are real and predictable.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The root cause pattern is consistent: gradual memory accumulation in server-side rendering contexts, often from cached objects that reference large closures, uncleared global state in API routes, and misconfigured Next.js ISR that keeps stale page data in memory indefinitely. The article's most actionable fix: disabling ISR for pages that don't genuinely need it, and scoping route handler state carefully to avoid retaining request data across calls.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>If your Next.js app is on a memory-constrained host, audit ISR config and API route handler scope before scaling vertically. The fixes are usually code-level, not infra-level — and cheap to implement.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','nextjsmem')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','nextjsmem')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('nextjsmem')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@danielrusnok/our-next-js-app-crashed-every-24-hours-here-are-the-six-memory-fixes-35245f6548e4" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-portlib">
+  <p class="story-card-meta">Medium · 5 min read · 146 reads</p>
+  <p class="story-card-author"><a href="https://medium.com/@TusharKanjariya" target="_blank" rel="noopener">Tushar Kanjariya</a></p>
+  <h3><a href="https://medium.com/@TusharKanjariya/this-tiny-library-removes-localhost-port-numbers-c452f9717a05" target="_blank" rel="noopener">This Tiny Library Removes localhost Port Numbers</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>Covers a small developer utility that maps localhost ports to named local domains (like <code>app.local</code>, <code>api.local</code>) — eliminating the cognitive overhead of remembering which service runs on which port in multi-service local dev environments. One command setup, works with most local stacks.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The DX insight: named local domains eliminate a class of "wrong tab" errors where developers make requests to the wrong service port while switching contexts between frontend, backend, and worker services. It also improves CORS configuration accuracy, since named domains can have stable, predictable entries in CORS allowlists.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>For any project with 3+ local services, named local domains are a low-effort DX win that pay off daily. Add it to your project's README and onboarding scripts — new team members will thank you.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','portlib')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','portlib')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('portlib')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@TusharKanjariya/this-tiny-library-removes-localhost-port-numbers-c452f9717a05" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- PYTHON & INDIE BUILDING -->
+
+  <div class="topic-group" data-group="asyncio,microsaas">
+    <span class="pill pill-python">Python &amp; Indie Building</span>
+
+```
+<div class="story-card" id="card-asyncio">
+  <p class="story-card-meta">Stackademic · 5 min read</p>
+  <p class="story-card-author"><a href="https://medium.com/@christos.karvouniaris247" target="_blank" rel="noopener">Chris Karvouniaris</a></p>
+  <h3><a href="https://medium.com/@christos.karvouniaris247/stop-using-asyncio-gather-proper-structured-concurrency-in-python-2c6a9561c264" target="_blank" rel="noopener">Stop Using asyncio.gather: Proper Structured Concurrency in Python</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>A clear-eyed critique of <code>asyncio.gather</code> and a case for Python 3.11's <code>TaskGroup</code> as its structured replacement. The article explains why <code>asyncio.gather</code>'s error handling is fundamentally broken for production use (tasks continue running after one fails) and how <code>TaskGroup</code> provides Trio-style structured concurrency semantics — all tasks in a group are cancelled if any one raises.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The critical failure mode of <code>asyncio.gather</code>: when one coroutine raises an exception, other coroutines in the gather continue executing — leading to partial writes, orphaned connections, and difficult-to-debug inconsistent states. <code>TaskGroup</code> provides guaranteed cancellation of sibling tasks on failure, which is the correct behavior for almost every real-world concurrent workload. The article also covers <code>ExceptionGroup</code> (Python 3.11+) for handling multiple concurrent exceptions gracefully.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>If you're writing async Python on 3.11+, replace <code>asyncio.gather</code> with <code>TaskGroup</code> as your default. The failure semantics of gather are a latent bug in most codebases using it for anything other than simple fan-out queries.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','asyncio')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','asyncio')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('asyncio')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@christos.karvouniaris247/stop-using-asyncio-gather-proper-structured-concurrency-in-python-2c6a9561c264" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+
+<div class="story-card" id="card-microsaas">
+  <p class="story-card-meta">Medium · 7 min read · 172 reads</p>
+  <p class="story-card-author"><a href="https://medium.com/@tamimbuilds" target="_blank" rel="noopener">tamimbuilds</a></p>
+  <h3><a href="https://medium.com/@tamimbuilds/7-stupid-micro-saas-ideas-that-are-quietly-making-5k-50k-month-2aa159562e7b" target="_blank" rel="noopener">7 "Stupid" Micro-SaaS Ideas That Are Quietly Making $5K–$50K/Month</a></h3>
+  <div class="card-section">
+    <span class="card-section-label">What's this about?</span>
+    <p>An antidote to the "build something ambitious" startup narrative. The author profiles seven unglamorous, single-purpose SaaS products that are generating sustainable revenue by solving one specific pain point extremely well. The "stupid" framing is deliberate — these are ideas that most developers dismiss as too simple, too niche, or already solved by larger tools.</p>
+    <p>The through-line: these products win by being boring, fast, and priced correctly — not by being impressive.</p>
+  </div>
+  <div class="card-section">
+    <span class="card-section-label">Key Technical Insights</span>
+    <p>The pattern across all seven: they're typically one-person operations using standard web tech (often Next.js + Stripe + a simple database), deployed on cost-efficient infra. The business insight hidden inside the tech observation: low technical complexity means low maintenance burden, which is what allows solo founders to sustain these products while keeping 80%+ margins. The simplicity is the moat, not a weakness.</p>
+  </div>
+  <div class="pullquote">
+    <span class="pullquote-label">Strategic Takeaway</span>
+    <p>The most durable indie products do one thing and charge for it clearly. If your SaaS pitch requires a paragraph to explain, your pricing page probably loses half its visitors. Pick a problem that fits in a tweet; build a product that fits in a week.</p>
+  </div>
+  <div class="story-footer">
+    <div class="reaction-btns">
+      <button class="reaction-btn" onclick="react(this,'like','microsaas')">👍 Useful</button>
+      <button class="reaction-btn" onclick="react(this,'dislike','microsaas')">👎 Skip</button>
+      <button class="reaction-btn hide-btn" onclick="toggleHide('microsaas')">👻 Hide</button>
+    </div>
+    <a class="story-read-link" href="https://medium.com/@tamimbuilds/7-stupid-micro-saas-ideas-that-are-quietly-making-5k-50k-month-2aa159562e7b" target="_blank" rel="noopener">Read on Medium →</a>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<hr class="section-rule" style="max-width:780px;margin:0 auto">
+
+<!-- ANALYST VIEW -->
+
+<section class="section" id="analyst">
+  <h2 class="section-title">Analyst View</h2>
+  <p class="section-sub">What it all means</p>
+  <div class="analyst-prose">
+    <p>Today's digest tells a single coherent story: Claude Code is graduating from a clever tool into a development platform, and developers who are paying attention are reorganizing their entire workflows around it. Five separate articles covering terminal selection, context management, mastery guides, multi-agent orchestration, and backend patterns — all about Claude Code, all published on the same day — isn't coincidence. It's a community reaching consensus that agentic coding is the new normal, and now working out the ergonomics.</p>
+    <p>The most significant shift visible across these pieces is the move from reactive to orchestrated AI usage. The multi-agent article captures it best: developers are no longer waiting for Claude to respond — they're designing agent topologies, writing delegation prompts, and treating AI instances as team members with defined roles. This maps to a broader architectural maturity: the same way developers moved from monolithic API calls to microservices, AI usage is moving from single-instance prompting to multi-agent pipelines with explicit handoffs.</p>
+    <p>The infrastructure and framework stories round out a picture of a developer community in active consolidation. The monorepo wars (Turborepo vs Nx), Next.js memory management, Python concurrency idioms — these aren't new topics, but the fact they're generating high read counts suggests developers are making architectural decisions now, likely in anticipation of AI-generated code at larger scale. When Claude Code writes your boilerplate, the cost of architectural debt compounds faster.</p>
+  </div>
+  <ul class="themes-list">
+    <li>Claude Code's tooling ecosystem is maturing rapidly — terminal choice, context management, and extension layers are becoming first-class concerns, not afterthoughts.</li>
+    <li>Multi-agent orchestration is crossing the threshold from experimental to expected — define your agent roles before your codebase makes it difficult.</li>
+    <li>Structured concurrency (Python's TaskGroup) and domain-driven React architecture share a root insight: local reasoning is more reliable than global state — in threads and in component trees.</li>
+    <li>Graph-based context retrieval (Graphify) signals that flat vector search is already showing limits for complex, relationship-heavy knowledge bases — relevant for anyone building RAG systems.</li>
+    <li>The micro-SaaS revival continues as a quiet counternarrative: low complexity + clear pricing + one job done well still beats ambitious-but-unfocused at the solo founder scale.</li>
+  </ul>
+</section>
+
+<!-- FOOTER -->
+
+<footer class="digest-footer">
+  <p>Tech Digest · April 28, 2026 · Source: <a href="https://medium.com" target="_blank" rel="noopener">Medium Daily Digest</a></p>
+  <p style="margin-top:8px">15 stories · Claude Code &amp; Agentic Dev · React · TypeScript · Python · UI Design · Micro-SaaS</p>
+</footer>
+
+<script>
+const cards = ['ghostty','superpowers','mastercc','multiagent','backendcc','claudedesign','graphify','reactarch','reactnative','uitrends','turborepo','nextjsmem','portlib','asyncio','microsaas'];
+
+function checkGroupVisibility() {
+  document.querySelectorAll('.topic-group[data-group]').forEach(g => {
+    const ids = g.dataset.group.split(',');
+    const allHidden = ids.every(id => localStorage.getItem('hide-' + id) === '1');
+    g.style.display = allHidden ? 'none' : '';
+  });
+}
+
+function toggleHide(id) {
+  const card = document.getElementById('card-' + id);
+  const cb = document.getElementById('cb-' + id);
+  const gi = cb ? cb.closest('.glance-item') : null;
+  const hidden = localStorage.getItem('hide-' + id) === '1';
+  if (hidden) {
+    localStorage.removeItem('hide-' + id);
+    if (card) card.classList.remove('hidden-card');
+    if (cb) cb.checked = true;
+    if (gi) gi.classList.remove('glance-hidden');
+  } else {
+    localStorage.setItem('hide-' + id, '1');
+    if (card) card.classList.add('hidden-card');
+    if (cb) cb.checked = false;
+    if (gi) gi.classList.add('glance-hidden');
+  }
+  checkGroupVisibility();
+}
+
+function react(btn, type, id) {
+  const card = document.getElementById('card-' + id);
+  const btns = card.querySelectorAll('.reaction-btn');
+  const stored = localStorage.getItem('reaction-' + id);
+  if (stored === type) {
+    localStorage.removeItem('reaction-' + id);
+    btns.forEach(b => b.classList.remove('active-like', 'active-dislike'));
+    return;
+  }
+  btns.forEach(b => b.classList.remove('active-like', 'active-dislike'));
+  if (type === 'like') btn.classList.add('active-like');
+  if (type === 'dislike') btn.classList.add('active-dislike');
+  localStorage.setItem('reaction-' + id, type);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  cards.forEach(id => {
+    if (localStorage.getItem('hide-' + id) === '1') {
+      const card = document.getElementById('card-' + id);
+      const cb = document.getElementById('cb-' + id);
+      const gi = cb ? cb.closest('.glance-item') : null;
+      if (card) card.classList.add('hidden-card');
+      if (cb) cb.checked = false;
+      if (gi) gi.classList.add('glance-hidden');
+    }
+    const stored = localStorage.getItem('reaction-' + id);
+    if (!stored) return;
+    const c = document.getElementById('card-' + id);
+    if (!c) return;
+    c.querySelectorAll('.reaction-btn').forEach(b => {
+      if (stored === 'like' && b.textContent.includes('Useful')) b.classList.add('active-like');
+      if (stored === 'dislike' && b.textContent.includes('Skip')) b.classList.add('active-dislike');
+    });
+  });
+  checkGroupVisibility();
+
+  // Scroll-spy
+  const sections = ['signal','glance','deepdive','analyst'];
+  const navLinks = {};
+  sections.forEach(id => {
+    navLinks[id] = document.querySelector(`.nav a[href="#${id}"]`);
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && navLinks[e.target.id]) {
+        Object.values(navLinks).forEach(l => l && l.classList.remove('active'));
+        navLinks[e.target.id].classList.add('active');
+      }
+    });
+  }, { threshold: 0.15 });
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+});
+</script>
+
+</body>
+</html>
